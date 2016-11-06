@@ -11,14 +11,13 @@ import (
 // DbMigration ...
 func DbMigration() {
 	getDb := db.GetDB()
-	getDb.AutoMigrate(&Article{})
+	// getDb.AutoMigrate(&Article{})
 	getDb.AutoMigrate(&Watcher{})
-	// getDb.Model(&article).Related(&watcher)
 }
 
 //WatcherSessionInfo ...
 type WatcherSessionInfo struct {
-	ID    int64  `json:"id"`
+	ID    uint   `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
@@ -59,10 +58,10 @@ func (j *JSONRaw) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-//ConvertToInt64 ...
-func ConvertToInt64(number interface{}) int64 {
+//ConvertToUInt ...
+func ConvertToUInt(number interface{}) uint {
 	if reflect.TypeOf(number).String() == "int" {
-		return int64(number.(int))
+		return uint(number.(int))
 	}
-	return number.(int64)
+	return number.(uint)
 }

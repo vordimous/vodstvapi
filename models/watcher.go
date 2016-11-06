@@ -8,16 +8,16 @@ import (
 
 	"esvodsApi/db"
 	"esvodsApi/forms"
+
+	"github.com/jinzhu/gorm"
 )
 
 //Watcher ...
 type Watcher struct {
-	ID        int    `json:"id"`
-	Email     string `json:"email"`
-	Password  string `json:"-"`
-	Name      string `json:"name"`
-	UpdatedAt int64  `json:"updated_at"`
-	CreatedAt int64  `json:"created_at"`
+	gorm.Model
+	Email    string `json:"email"`
+	Password string `json:"-"`
+	Name     string `json:"name"`
 }
 
 //WatcherModel ...
@@ -25,9 +25,7 @@ type WatcherModel struct{}
 
 //Signin ...
 func (m WatcherModel) Signin(form forms.SigninForm) (watcher Watcher, err error) {
-	getDb := db.GetDB()
-
-	getDb.Where(&Watcher{Email: form.Email}).First(&watcher)
+	db.GetDB().Where(&Watcher{Email: form.Email}).First(&watcher)
 
 	if watcher.ID != 0 {
 
@@ -45,7 +43,6 @@ func (m WatcherModel) Signin(form forms.SigninForm) (watcher Watcher, err error)
 //Signup ...
 func (m WatcherModel) Signup(form forms.SignupForm) (watcher Watcher, err error) {
 	getDb := db.GetDB()
-
 	getDb.Where(&Watcher{Email: form.Email}).First(&watcher)
 
 	if getDb.NewRecord(watcher) {
@@ -65,9 +62,8 @@ func (m WatcherModel) Signup(form forms.SignupForm) (watcher Watcher, err error)
 }
 
 //One ...
-func (m WatcherModel) One(watcherID int64) (watcher Watcher) {
-	getDb := db.GetDB()
-	getDb.First(&watcher, watcherID)
+func (m WatcherModel) One(watcherID uint) (watcher Watcher) {
+	db.GetDB().First(&watcher, watcherID)
 	return watcher
 }
 

@@ -47,7 +47,7 @@ func httpTest(c *gin.Context) {
 	} else {
 		status["dbConn"] = err.Error()
 	}
-	c.JSON(200, gin.H{"status": status})
+	c.JSON(200, status)
 }
 
 func main() {
@@ -56,7 +56,7 @@ func main() {
 	// Handle server exceptions
 	r.Use(nice.Recovery(recoveryHandler))
 
-	// r.Use(CORSMiddleware())
+	r.Use(CORSMiddleware())
 
 	//session management
 	store, _ := sessions.NewRedisStore(10, "tcp", "localdocker:6379", "", []byte("secret"))

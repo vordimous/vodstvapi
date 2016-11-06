@@ -16,11 +16,11 @@ type WatcherController struct{}
 var watcherModel = new(models.WatcherModel)
 
 //getWatcherID ...
-func getWatcherID(c *gin.Context) int64 {
+func getWatcherID(c *gin.Context) uint {
 	session := sessions.Default(c)
 	watcherID := session.Get("watcher_id")
 	if watcherID != nil {
-		return models.ConvertToInt64(watcherID)
+		return models.ConvertToUInt(watcherID)
 	}
 	return 0
 }
@@ -30,7 +30,7 @@ func getSessionWatcherInfo(c *gin.Context) (watcherSessionInfo models.WatcherSes
 	session := sessions.Default(c)
 	watcherID := session.Get("watcher_id")
 	if watcherID != nil {
-		watcherSessionInfo.ID = models.ConvertToInt64(watcherID)
+		watcherSessionInfo.ID = models.ConvertToUInt(watcherID)
 		watcherSessionInfo.Name = session.Get("watcher_name").(string)
 		watcherSessionInfo.Email = session.Get("watcher_email").(string)
 	}

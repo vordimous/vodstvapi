@@ -17,7 +17,7 @@ type Article struct {
 type ArticleModel struct{}
 
 //Create ...
-func (m ArticleModel) Create(watcherID int64, form forms.ArticleForm) (articleID int64, err error) {
+func (m ArticleModel) Create(watcherID uint, form forms.ArticleForm) (articleID int64, err error) {
 	// getDb := db.GetDB()
 
 	// watcherModel := new(WatcherModel)
@@ -40,19 +40,19 @@ func (m ArticleModel) Create(watcherID int64, form forms.ArticleForm) (articleID
 }
 
 //One ...
-func (m ArticleModel) One(watcherID, id int64) (article Article, err error) {
+func (m ArticleModel) One(watcherID uint, id int64) (article Article, err error) {
 	// err = db.GetDB().SelectOne(&article, "SELECT a.id, a.title, a.content, a.updated_at, a.created_at, json_build_object('id', u.id, 'name', u.name, 'email', u.email) AS watcher FROM article a LEFT JOIN public.watcher u ON a.watcher_id = u.id WHERE a.watcher_id=$1 AND a.id=$2 GROUP BY a.id, a.title, a.content, a.updated_at, a.created_at, u.id, u.name, u.email LIMIT 1", watcherID, id)
 	return article, err
 }
 
 //All ...
-func (m ArticleModel) All(watcherID int64) (articles []Article, err error) {
+func (m ArticleModel) All(watcherID uint) (articles []Article, err error) {
 	// _, err = db.GetDB().Select(&articles, "SELECT a.id, a.title, a.content, a.updated_at, a.created_at, json_build_object('id', u.id, 'name', u.name, 'email', u.email) AS watcher FROM article a LEFT JOIN public.watcher u ON a.watcher_id = u.id WHERE a.watcher_id=$1 GROUP BY a.id, a.title, a.content, a.updated_at, a.created_at, u.id, u.name, u.email ORDER BY a.id DESC", watcherID)
 	return articles, err
 }
 
 //Update ...
-func (m ArticleModel) Update(watcherID int64, id int64, form forms.ArticleForm) (err error) {
+func (m ArticleModel) Update(watcherID uint, id int64, form forms.ArticleForm) (err error) {
 	// _, err = m.One(watcherID, id)
 
 	// if err != nil {
@@ -65,7 +65,7 @@ func (m ArticleModel) Update(watcherID int64, id int64, form forms.ArticleForm) 
 }
 
 //Delete ...
-func (m ArticleModel) Delete(watcherID, id int64) (err error) {
+func (m ArticleModel) Delete(watcherID uint, id int64) (err error) {
 	// _, err = m.One(watcherID, id)
 
 	// if err != nil {

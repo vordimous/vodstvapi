@@ -2,7 +2,7 @@ package forms
 
 //SigninForm ...
 type SigninForm struct {
-	ID       int64  `form:"id" json:"id"`
+	ID       uint  `form:"id" json:"id"`
 	Email    string `form:"email" json:"email" binding:"required,email"`
 	Password string `form:"password" json:"password" binding:"required"`
 }
