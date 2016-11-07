@@ -1,9 +1,8 @@
-package db
+package dao
 
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" //import postgres
@@ -48,10 +47,4 @@ func Init() {
 //GetDB ...
 func GetDB() *gorm.DB {
 	return db
-}
-
-func checkErr(err error, msg string) {
-	if err != nil {
-		log.Fatalln(msg, err)
-	}
 }

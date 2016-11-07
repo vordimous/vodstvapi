@@ -4,8 +4,7 @@ import (
 	"fmt"
 
 	"esvodsApi/controllers"
-	"esvodsApi/db"
-	"esvodsApi/models"
+	"esvodsApi/dao"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -41,7 +40,7 @@ func recoveryHandler(c *gin.Context, err interface{}) {
 
 func httpTest(c *gin.Context) {
 	status := make(map[string]string)
-	err := db.GetDB().DB().Ping()
+	err := dao.GetDB().DB().Ping()
 	if err == nil {
 		status["dbConn"] = "true"
 	} else {
@@ -62,8 +61,8 @@ func main() {
 	store, _ := sessions.NewRedisStore(10, "tcp", "localdocker:6379", "", []byte("secret"))
 	r.Use(sessions.Sessions("esvods-session", store))
 
-	db.Init()
-	models.DbMigration()
+	dao.Init()
+	dao.DbMigration()
 
 	v1 := r.Group("/v1")
 	{
@@ -77,14 +76,14 @@ func main() {
 		v1.GET("/watcher/signout", watcher.Signout)
 		v1.GET("/me", watcher.Me)
 
-		/*** START Article ***/
-		article := new(controllers.ArticleController)
+		/*** START Vod ***/
+		vod := new(controllers.VodController)
 
-		v1.POST("/article", article.Create)
-		v1.GET("/articles", article.All)
-		v1.GET("/article/:id", article.One)
-		v1.PUT("/article/:id", article.Update)
-		v1.DELETE("/article/:id", article.Delete)
+		v1.POST("/vod", vod.Create)
+		v1.GET("/vods", vod.All)
+		v1.GET("/vod/:id", vod.One)
+		v1.PUT("/vod/:id", vod.Update)
+		v1.DELETE("/vod/:id", vod.Delete)
 	}
 
 	r.Run(":9000")

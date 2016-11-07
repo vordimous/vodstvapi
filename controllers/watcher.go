@@ -3,8 +3,8 @@ package controllers
 import (
 	"fmt"
 
+	"esvodsApi/dao"
 	"esvodsApi/forms"
-	"esvodsApi/models"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -13,29 +13,7 @@ import (
 //WatcherController ...
 type WatcherController struct{}
 
-var watcherModel = new(models.WatcherModel)
-
-//getWatcherID ...
-func getWatcherID(c *gin.Context) uint {
-	session := sessions.Default(c)
-	watcherID := session.Get("watcher_id")
-	if watcherID != nil {
-		return models.ConvertToUInt(watcherID)
-	}
-	return 0
-}
-
-//getSessionWatcherInfo ...
-func getSessionWatcherInfo(c *gin.Context) (watcherSessionInfo models.WatcherSessionInfo) {
-	session := sessions.Default(c)
-	watcherID := session.Get("watcher_id")
-	if watcherID != nil {
-		watcherSessionInfo.ID = models.ConvertToUInt(watcherID)
-		watcherSessionInfo.Name = session.Get("watcher_name").(string)
-		watcherSessionInfo.Email = session.Get("watcher_email").(string)
-	}
-	return watcherSessionInfo
-}
+var watcherDao = new(dao.WatcherDao)
 
 //Signin ...
 func (ctrl WatcherController) Signin(c *gin.Context) {
@@ -47,7 +25,7 @@ func (ctrl WatcherController) Signin(c *gin.Context) {
 		return
 	}
 
-	watcher, err := watcherModel.Signin(signinForm)
+	watcher, err := watcherDao.Signin(signinForm)
 	if err == nil {
 		session := sessions.Default(c)
 		session.Set("watcher_id", watcher.ID)
@@ -55,7 +33,7 @@ func (ctrl WatcherController) Signin(c *gin.Context) {
 		session.Set("watcher_name", watcher.Name)
 		session.Save()
 
-		c.JSON(200, getSessionWatcherInfo(c))
+		c.JSON(200, dao.GetSessionWatcherInfo(c))
 	} else {
 		c.JSON(406, gin.H{"message": "Invalid signin details", "error": err.Error()})
 	}
@@ -72,7 +50,7 @@ func (ctrl WatcherController) Signup(c *gin.Context) {
 		return
 	}
 
-	watcher, err := watcherModel.Signup(signupForm)
+	watcher, err := watcherDao.Signup(signupForm)
 
 	if err != nil {
 		c.JSON(406, gin.H{"message": err.Error()})
@@ -97,7 +75,7 @@ func (ctrl WatcherController) Signup(c *gin.Context) {
 func (ctrl WatcherController) Signout(c *gin.Context) {
 	session := sessions.Default(c)
 	if session != nil {
-		watcherID := getWatcherID(c)
+		watcherID := dao.GetWatcherID(c)
 		session.Clear()
 		session.Save()
 		fmt.Println("Logged out:", watcherID)
@@ -109,5 +87,5 @@ func (ctrl WatcherController) Signout(c *gin.Context) {
 
 //Me ...
 func (ctrl WatcherController) Me(c *gin.Context) {
-	c.JSON(200, getSessionWatcherInfo(c))
+	c.JSON(200, dao.GetSessionWatcherInfo(c))
 }
