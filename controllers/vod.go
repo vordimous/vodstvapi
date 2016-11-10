@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"esvodsApi/dao"
 	"esvodsApi/forms"
+	"esvodsCore/dao"
+	"esvodsCore/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,68 +13,56 @@ type VodController struct{}
 
 var vodDao = new(dao.VodDao)
 
-//Create ...
-func (ctrl VodController) Create(c *gin.Context) {
+//Find ...
+func (ctrl VodController) Find(c *gin.Context) {
 	checkLogin(c)
 
-	var vodForm forms.VodForm
-	bindJsonToForm(c, &vodForm)
+	var vodSearch forms.VodSearch
+	bindJSONToForm(c, &vodSearch)
 
-	vodID, err := vodDao.Create(vodForm)
-
-	checkErr(c, err, "Vod create failed")
-
-	c.JSON(200, gin.H{"message": "Vod created", "id": vodID})
-}
-
-//All ...
-func (ctrl VodController) All(c *gin.Context) {
-	checkLogin(c)
-
-	data, err := vodDao.All()
-
-	checkErr(c, err, "Could not get the vods")
+	data, err := vodDao.Find(vodSearch)
+	checkErr(c, err, "Could not find vods")
 
 	c.JSON(200, data)
 }
 
-//One ...
-func (ctrl VodController) One(c *gin.Context) {
+//Get ...
+func (ctrl VodController) Get(c *gin.Context) {
 	checkLogin(c)
 
-	id := getIDParam(c)
-
-	var vodForm forms.VodForm
-	bindJsonToForm(c, &vodForm)
-
-	data, err := vodDao.One(id)
+	vod, err := vodDao.Get(getIDParam(c))
 	checkErr(c, err, "Vod get failed")
 
-	c.JSON(200, data)
+	c.JSON(200, vod)
 }
 
-//Update ...
-func (ctrl VodController) Update(c *gin.Context) {
+//Save ...
+func (ctrl VodController) Save(c *gin.Context) {
 	checkLogin(c)
+
 	var vodForm forms.VodForm
-	bindJsonToForm(c, &vodForm)
+	bindJSONToForm(c, &vodForm)
 
-	err := vodDao.Update(vodForm)
-	checkErr(c, err, "Vod update failed")
+	var vod = models.Vod{} 
+	var err error
+	if vodForm.ID != 0 {
+		vod, err = vodDao.Get(vodForm.ID)
+	}
 
-	c.JSON(200, gin.H{"message": "Vod updated"})
+	err = vodForm.ToModel(&vod)
+	checkErr(c, err, "Vod convert failed")
+
+	err = vodDao.Save(&vod)
+	checkErr(c, err, "Vod create failed")
+
+	c.JSON(200, vod)
 }
 
 //Delete ...
 func (ctrl VodController) Delete(c *gin.Context) {
 	checkLogin(c)
 
-	id := getIDParam(c)
-
-	var vodForm forms.VodForm
-	bindJsonToForm(c, &vodForm)
-
-	err := vodDao.Delete(id)
+	err := vodDao.Delete(getIDParam(c))
 	checkErr(c, err, "Vod delete failed")
 
 	c.JSON(200, gin.H{"message": "Vod deleted"})

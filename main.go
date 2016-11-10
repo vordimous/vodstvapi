@@ -4,7 +4,8 @@ import (
 	"fmt"
 
 	"esvodsApi/controllers"
-	"esvodsApi/dao"
+	"esvodsCore/dao"
+	"esvodsCore/sess"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -52,14 +53,10 @@ func httpTest(c *gin.Context) {
 func main() {
 	r := gin.Default()
 
-	// Handle server exceptions
+	//Middlewear
 	r.Use(nice.Recovery(recoveryHandler))
-
 	r.Use(CORSMiddleware())
-
-	//session management
-	store, _ := sessions.NewRedisStore(10, "tcp", "localdocker:6379", "", []byte("secret"))
-	r.Use(sessions.Sessions("esvods-session", store))
+	r.Use(sessions.Sessions("esvods-session", sess.Init()))
 
 	dao.Init()
 	dao.DbMigration()
@@ -79,10 +76,9 @@ func main() {
 		/*** START Vod ***/
 		vod := new(controllers.VodController)
 
-		v1.POST("/vod", vod.Create)
-		v1.GET("/vods", vod.All)
-		v1.GET("/vod/:id", vod.One)
-		v1.PUT("/vod/:id", vod.Update)
+		v1.POST("/vod", vod.Save)
+		v1.POST("/vods", vod.Find)
+		v1.GET("/vod/:id", vod.Get)
 		v1.DELETE("/vod/:id", vod.Delete)
 	}
 

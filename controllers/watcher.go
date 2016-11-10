@@ -3,8 +3,9 @@ package controllers
 import (
 	"fmt"
 
-	"esvodsApi/dao"
+	"esvodsCore/dao"
 	"esvodsApi/forms"
+	"esvodsCore/sess"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -33,7 +34,7 @@ func (ctrl WatcherController) Signin(c *gin.Context) {
 		session.Set("watcher_name", watcher.Name)
 		session.Save()
 
-		c.JSON(200, dao.GetSessionWatcherInfo(c))
+		c.JSON(200, sess.GetSessionWatcherInfo(c))
 	} else {
 		c.JSON(406, gin.H{"message": "Invalid signin details", "error": err.Error()})
 	}
@@ -75,7 +76,7 @@ func (ctrl WatcherController) Signup(c *gin.Context) {
 func (ctrl WatcherController) Signout(c *gin.Context) {
 	session := sessions.Default(c)
 	if session != nil {
-		watcherID := dao.GetWatcherID(c)
+		watcherID := sess.GetWatcherID(c)
 		session.Clear()
 		session.Save()
 		fmt.Println("Logged out:", watcherID)
@@ -87,5 +88,5 @@ func (ctrl WatcherController) Signout(c *gin.Context) {
 
 //Me ...
 func (ctrl WatcherController) Me(c *gin.Context) {
-	c.JSON(200, dao.GetSessionWatcherInfo(c))
+	c.JSON(200, sess.GetSessionWatcherInfo(c))
 }

@@ -1,8 +1,28 @@
 package forms
 
+import (
+	"esvodsCore/models"
+
+	"github.com/fatih/structs"
+)
+
 //VodForm ...
 type VodForm struct {
-	JsonForm
-	Email    string `form:"email" json:"email" binding:"required,email"`
-	Password string `form:"password" json:"password" binding:"required"`
+	ModelForm
+	ID      uint
+	Title   string
+	Content string
+}
+
+//VodSearch ...
+type VodSearch struct {
+	Title   string
+	Content string
+}
+
+//ToModel ...
+func (f VodForm) ToModel(v *models.Vod) (err error) {
+	m := structs.Map(f)
+	v.FillStruct(m)
+	return err
 }

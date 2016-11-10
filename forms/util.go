@@ -1,6 +1,6 @@
 package forms
 
-//JsonForm ...
-type JsonForm struct {
-	ID uint `form:"id" json:"id"`
+//ModelForm ...
+type ModelForm interface {
+	ToModel(m *interface{}) error
 }
