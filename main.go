@@ -77,9 +77,27 @@ func main() {
 		vod := new(controllers.VodController)
 
 		v1.POST("/vod", vod.Save)
+		v1.POST("/vodAscTag", vod.AscTag)
 		v1.POST("/vods", vod.Find)
 		v1.GET("/vod/:id", vod.Get)
 		v1.DELETE("/vod/:id", vod.Delete)
+
+		/*** START Match ***/
+		match := new(controllers.MatchController)
+
+		v1.POST("/match", match.Save)
+		v1.POST("/matchAscVod", match.AscVod)
+		v1.POST("/matches", match.Find)
+		v1.GET("/match/:id", match.Get)
+		v1.DELETE("/match/:id", match.Delete)
+
+		/*** START Tag ***/
+		tag := new(controllers.TagController)
+
+		v1.POST("/tag", tag.Save)
+		v1.POST("/tags", tag.Find)
+		v1.GET("/tag/:id", tag.Get)
+		v1.DELETE("/tag/:id", tag.Delete)
 	}
 
 	r.Run(":9000")

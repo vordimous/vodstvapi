@@ -8,10 +8,21 @@ import (
 
 //VodForm ...
 type VodForm struct {
-	ModelForm
-	ID      uint
-	Title   string
-	Content string
+	ModelForm `json:"-"`
+	ID        uint
+	Title     string
+	Content   string
+	VideoKey  string
+	VideoURL  string
+	VideoSrc  string
+	VideoDate string
+	ThumbURL  string
+}
+
+//VodTagAsc ...
+type VodTagAsc struct {
+	VodID uint `json:"vodId"`
+	TagID uint `json:"tagId"`
 }
 
 //VodSearch ...
