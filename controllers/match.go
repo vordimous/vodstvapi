@@ -79,7 +79,7 @@ func (ctrl MatchController) AscVod(c *gin.Context) {
 		vod, err = vodDao.Get(vta.VodID)
 		if checkErr(c, err, "Could not find items") {
 			match.Vods = append(match.Vods, vod)
-			vodDao.Save(&match)
+			matchDao.Save(&match)
 
 			if checkErr(c, err, "Could not save match") {
 				c.JSON(200, match)

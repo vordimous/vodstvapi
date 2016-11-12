@@ -9,7 +9,7 @@ import (
 //TagForm ...
 type TagForm struct {
 	ModelForm
-	ID   uint
+	ID   uint`json:"id"`
 	Name string
 }
 

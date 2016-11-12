@@ -9,7 +9,7 @@ import (
 //VodForm ...
 type VodForm struct {
 	ModelForm `json:"-"`
-	ID        uint
+	ID        uint`json:"id"`
 	Title     string
 	Content   string
 	VideoKey  string

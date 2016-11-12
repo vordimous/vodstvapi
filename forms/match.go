@@ -9,8 +9,8 @@ import (
 //MatchForm ...
 type MatchForm struct {
 	ModelForm
-	ID   uint
-	Name string
+	ID    uint `json:"id"`
+	Title string
 }
 
 //MatchVodAsc ...
