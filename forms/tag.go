@@ -9,13 +9,16 @@ import (
 //TagForm ...
 type TagForm struct {
 	ModelForm
-	ID   uint`json:"id"`
-	Name string
+	ID    uint `json:"id"`
+	Name  string
+	Type  string
+	Regex string
 }
 
 //TagSearch ...
 type TagSearch struct {
 	Name string
+	Type string
 }
 
 //ToModel ...
