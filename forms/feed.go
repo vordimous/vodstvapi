@@ -6,8 +6,8 @@ import (
 	"github.com/fatih/structs"
 )
 
-//TagForm ...
-type TagForm struct {
+//FeedForm ...
+type FeedForm struct {
 	ModelForm
 	ID    uint `json:"id"`
 	Name  string
@@ -15,14 +15,14 @@ type TagForm struct {
 	Regex string
 }
 
-//TagSearch ...
-type TagSearch struct {
+//FeedSearch ...
+type FeedSearch struct {
 	Name string
 	Type string
 }
 
 //ToModel ...
-func (f TagForm) ToModel(t *models.Tag) (err error) {
+func (f FeedForm) ToModel(t *models.Feed) (err error) {
 	m := structs.Map(f)
 	t.FillStruct(m)
 	return err

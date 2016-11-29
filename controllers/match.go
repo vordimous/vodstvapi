@@ -99,6 +99,6 @@ func (ctrl MatchController) Delete(c *gin.Context) {
 
 	err := matchDao.Delete(getIDParam(c))
 	if checkErr(c, err, "Match delete failed") {
-		c.JSON(200, gin.H{"message": "Match deleted"})
+		c.JSON(200, gin.H{"message": "Match deleted", "success": true})
 	}
 }

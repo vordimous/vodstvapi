@@ -105,6 +105,6 @@ func (ctrl VodController) Delete(c *gin.Context) {
 
 	err := vodDao.Delete(getIDParam(c))
 	if checkErr(c, err, "Vod delete failed") {
-		c.JSON(200, gin.H{"message": "Vod deleted"})
+		c.JSON(200, gin.H{"message": "Vod deleted", "success": true})
 	}
 }
