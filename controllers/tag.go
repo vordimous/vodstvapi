@@ -47,8 +47,7 @@ func (ctrl TagController) Save(c *gin.Context) {
 		return
 	}
 
-	var tag = models.Tag{}
-
+	tag := models.Tag{}
 	err := c.BindJSON(&tag)
 	if checkErr(c, err, "Tag convert failed") {
 		err = tagDao.Save(&tag)
@@ -56,7 +55,6 @@ func (ctrl TagController) Save(c *gin.Context) {
 			c.JSON(200, tag)
 		}
 	}
-
 }
 
 //Delete ...

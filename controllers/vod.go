@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"esvodsApi/forms"
 	"esvodsCore/dao"
 	"esvodsCore/models"
 
@@ -15,9 +14,11 @@ var vodDao = new(dao.VodDao)
 
 //Find ...
 func (ctrl VodController) Find(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
-	var vodSearch forms.VodSearch
+	vodSearch := make(map[string]interface{})
 	if !bindJSONToForm(c, &vodSearch) {
 		return
 	}
@@ -30,9 +31,14 @@ func (ctrl VodController) Find(c *gin.Context) {
 
 //AscTag ...
 func (ctrl VodController) AscTag(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
-	var vta forms.VodTagAsc
+	vta := struct {
+		VodID uint `json:"vodId"`
+		TagID uint `json:"tagId"`
+	}{}
 	if !bindJSONToForm(c, &vta) {
 		return
 	}
@@ -61,7 +67,9 @@ func (ctrl VodController) AscTag(c *gin.Context) {
 
 //Get ...
 func (ctrl VodController) Get(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
 	vod, err := vodDao.Get(getIDParam(c))
 	if checkErr(c, err, "Vod get failed") {
@@ -71,40 +79,28 @@ func (ctrl VodController) Get(c *gin.Context) {
 
 //Save ...
 func (ctrl VodController) Save(c *gin.Context) {
-	checkLogin(c)
-
-	vodForm := forms.VodForm{}
-	if !bindJSONToForm(c, &vodForm) {
+	if !checkLogin(c) {
 		return
 	}
 
 	vod := models.Vod{}
-	if vodForm.ID != 0 {
-		//todo: check for delete
-
-		found, e := vodDao.Get(vodForm.ID)
-		if e == nil {
-			vod = found
+	err := c.BindJSON(&vod)
+	if checkErr(c, err, "Vod convert failed") {
+		err = vodDao.Save(&vod)
+		if checkErr(c, err, "Vod save failed") {
+			c.JSON(200, vod)
 		}
-	}
-
-	err := vodForm.ToModel(&vod)
-	if !checkErr(c, err, "Vod convert failed") {
-		return
-	}
-
-	err = vodDao.Save(&vod)
-	if checkErr(c, err, "Vod create failed") {
-		c.JSON(200, vod)
 	}
 }
 
 //Delete ...
 func (ctrl VodController) Delete(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
-	err := vodDao.Delete(getIDParam(c))
+	vod, err := vodDao.Delete(getIDParam(c))
 	if checkErr(c, err, "Vod delete failed") {
-		c.JSON(200, gin.H{"message": "Vod deleted", "success": true})
+		c.JSON(200, vod)
 	}
 }

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"esvodsApi/forms"
 	"esvodsCore/dao"
 	"esvodsCore/models"
 
@@ -15,9 +14,11 @@ var matchDao = new(dao.MatchDao)
 
 //Find ...
 func (ctrl MatchController) Find(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
-	var matchSearch forms.MatchSearch
+	matchSearch := make(map[string]interface{})
 	if !bindJSONToForm(c, &matchSearch) {
 		return
 	}
@@ -30,7 +31,9 @@ func (ctrl MatchController) Find(c *gin.Context) {
 
 //Get ...
 func (ctrl MatchController) Get(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
 	match, err := matchDao.Get(getIDParam(c))
 	if checkErr(c, err, "Match get failed") {
@@ -40,43 +43,40 @@ func (ctrl MatchController) Get(c *gin.Context) {
 
 //Save ...
 func (ctrl MatchController) Save(c *gin.Context) {
-	checkLogin(c)
-
-	var matchForm forms.MatchForm
-	if !bindJSONToForm(c, &matchForm) {
+	if !checkLogin(c) {
 		return
 	}
 
-	var match = models.Match{}
-	var err error
-	if matchForm.ID != 0 {
-		match, err = matchDao.Get(matchForm.ID)
-	}
-
-	err = matchForm.ToModel(&match)
-	checkErr(c, err, "Match convert failed")
-
-	err = matchDao.Save(&match)
-	if checkErr(c, err, "Match create failed") {
-		c.JSON(200, match)
+	match := models.Match{}
+	err := c.BindJSON(&match)
+	if checkErr(c, err, "Match convert failed") {
+		err = matchDao.Save(&match)
+		if checkErr(c, err, "Match save failed") {
+			c.JSON(200, match)
+		}
 	}
 }
 
 //AscVod ...
 func (ctrl MatchController) AscVod(c *gin.Context) {
-	checkLogin(c)
-
-	var vta forms.MatchVodAsc
-	if !bindJSONToForm(c, &vta) {
+	if !checkLogin(c) {
 		return
 	}
 
-	if vta.MatchID != 0 && vta.VodID != 0 {
+	mva := struct {
+		MatchID uint `json:"matchId"`
+		VodID   uint `json:"vodId"`
+	}{}
+	if !bindJSONToForm(c, &mva) {
+		return
+	}
+
+	if mva.MatchID != 0 && mva.VodID != 0 {
 		var match models.Match
 		var vod models.Vod
 		var err error
-		match, err = matchDao.Get(vta.MatchID)
-		vod, err = vodDao.Get(vta.VodID)
+		match, err = matchDao.Get(mva.MatchID)
+		vod, err = vodDao.Get(mva.VodID)
 		if checkErr(c, err, "Could not find items") {
 			match.Vods = append(match.Vods, vod)
 			matchDao.Save(&match)
@@ -86,7 +86,7 @@ func (ctrl MatchController) AscVod(c *gin.Context) {
 			}
 		}
 	} else {
-		c.JSON(406, gin.H{"Message": "Must supply both IDs", "form": vta})
+		c.JSON(406, gin.H{"Message": "Must supply both IDs", "form": mva})
 		c.Abort()
 		return
 	}
@@ -95,7 +95,9 @@ func (ctrl MatchController) AscVod(c *gin.Context) {
 
 //Delete ...
 func (ctrl MatchController) Delete(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
 	err := matchDao.Delete(getIDParam(c))
 	if checkErr(c, err, "Match delete failed") {

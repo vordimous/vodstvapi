@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 
-	"esvodsApi/forms"
 	"esvodsCore/dao"
 	"esvodsCore/sess"
 
@@ -18,7 +17,7 @@ var watcherDao = new(dao.WatcherDao)
 
 //Signin ...
 func (ctrl WatcherController) Signin(c *gin.Context) {
-	var signinForm forms.SigninForm
+	signinForm := dao.SigninForm{}
 
 	if c.BindJSON(&signinForm) != nil {
 		c.JSON(406, gin.H{"message": "Invalid form", "form": signinForm})
@@ -43,7 +42,7 @@ func (ctrl WatcherController) Signin(c *gin.Context) {
 
 //Signup ...
 func (ctrl WatcherController) Signup(c *gin.Context) {
-	var signupForm forms.SignupForm
+	signupForm := dao.SignupForm{}
 
 	if c.BindJSON(&signupForm) != nil {
 		c.JSON(406, gin.H{"message": "Invalid form", "form": signupForm})
