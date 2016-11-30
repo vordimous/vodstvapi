@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"esvodsApi/forms"
 	"esvodsCore/dao"
 	"esvodsCore/models"
 
@@ -15,9 +14,11 @@ var tagDao = new(dao.TagDao)
 
 //Find ...
 func (ctrl TagController) Find(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
-	var tagSearch forms.TagSearch
+	tagSearch := make(map[string]interface{})
 	if !bindJSONToForm(c, &tagSearch) {
 		return
 	}
@@ -30,7 +31,9 @@ func (ctrl TagController) Find(c *gin.Context) {
 
 //Get ...
 func (ctrl TagController) Get(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
 	tag, err := tagDao.Get(getIDParam(c))
 	if checkErr(c, err, "Tag get failed") {
@@ -58,7 +61,9 @@ func (ctrl TagController) Save(c *gin.Context) {
 
 //Delete ...
 func (ctrl TagController) Delete(c *gin.Context) {
-	checkLogin(c)
+	if !checkLogin(c) {
+		return
+	}
 
 	tag, err := tagDao.Delete(getIDParam(c))
 	if checkErr(c, err, "Tag delete failed") {
