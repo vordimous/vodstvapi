@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"esvodsCore/dao"
-	"esvodsCore/models"
+	"github.com/vodstv/core/dao"
+	"github.com/vodstv/core/models"
 
 	"github.com/gin-gonic/gin"
 )

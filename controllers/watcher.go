@@ -3,8 +3,8 @@ package controllers
 import (
 	"fmt"
 
-	"esvodsCore/dao"
-	"esvodsCore/sess"
+	"github.com/vodstv/core/dao"
+	"github.com/vodstv/core/sess"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"

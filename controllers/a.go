@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"esvodsCore/sess"
+	"github.com/vodstv/core/sess"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
