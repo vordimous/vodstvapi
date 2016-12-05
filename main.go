@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"esvods-api/controllers"
 
@@ -104,5 +105,11 @@ func main() {
 		v1.DELETE("/tag/:id", tag.Delete)
 	}
 
-	r.Run(":9000")
+	port := os.Getenv("REDIS_URL")
+
+	if port == "" {
+		port = "9000"
+	}
+
+	r.Run(":" + port)
 }
