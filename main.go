@@ -105,7 +105,7 @@ func main() {
 		v1.DELETE("/tag/:id", tag.Delete)
 	}
 
-	port := os.Getenv("REDIS_URL")
+	port := os.Getenv("PORT")
 
 	if port == "" {
 		port = "9000"
