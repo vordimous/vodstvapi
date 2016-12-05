@@ -107,7 +107,7 @@
 		},
 		{
 			"ImportPath": "github.com/vodstv/core",
-			"Rev": "c5c1568a3b9a4aad9f6b00f93ea257eb0ed6e66b"
+			"Rev": "6f583350e4ef565a94fe54682952b408364abc55"
 		},
 		{
 			"ImportPath": "github.com/vodstv/core/dao",
