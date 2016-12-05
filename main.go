@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"esvodsApi/controllers"
+	"esvods-api/controllers"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
