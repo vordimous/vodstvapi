@@ -102,10 +102,6 @@
 			"Rev": "ee05b128a739a0fb76c7ebd3ae4810c1de808d6d"
 		},
 		{
-			"ImportPath": "github.com/mattn/go-isatty",
-			"Rev": "30a891c33c7cde7b02a981314b4228ec99380cca"
-		},
-		{
 			"ImportPath": "github.com/vodstv/core",
 			"Rev": "c5c1568a3b9a4aad9f6b00f93ea257eb0ed6e66b"
 		},
@@ -132,10 +128,6 @@
 		{
 			"ImportPath": "golang.org/x/net/context",
 			"Rev": "6cdc0daab091c43fc46193327e0047b4f883c613"
-		},
-		{
-			"ImportPath": "golang.org/x/sys/unix",
-			"Rev": "f5a6bd43051d3f1f5dd3e0dbd531721aa5e75d28"
 		},
 		{
 			"ImportPath": "gopkg.in/go-playground/validator.v8",
