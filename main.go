@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"esvodsApi/controllers"
+	"esvodsApi/policies"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -64,7 +65,6 @@ func main() {
 	r.Use(sessions.Sessions("esvods-session", sess.Init()))
 
 	dao.Init()
-	// dao.DbMigration()
 
 	v1 := r.Group("/v1")
 	{
@@ -103,6 +103,14 @@ func main() {
 		v1.POST("/tags", tag.Find)
 		v1.GET("/tag/:id", tag.Get)
 		v1.DELETE("/tag/:id", tag.Delete)
+
+		/*** START Feed ***/
+		feed := new(controllers.FeedController)
+
+		v1.POST("/feed", policies.ReqAuth(), feed.Save)
+		v1.POST("/feeds", policies.ReqAuth(), feed.Find)
+		v1.GET("/feed/:id", policies.ReqAuth(), feed.Get)
+		v1.DELETE("/feed/:id", policies.ReqAuth(), feed.Delete)
 	}
 
 	port := os.Getenv("PORT")

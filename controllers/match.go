@@ -14,10 +14,6 @@ var matchDao = new(dao.MatchDao)
 
 //Find ...
 func (ctrl MatchController) Find(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	matchSearch := make(map[string]interface{})
 	if !bindJSONToForm(c, &matchSearch) {
 		return
@@ -31,10 +27,6 @@ func (ctrl MatchController) Find(c *gin.Context) {
 
 //Get ...
 func (ctrl MatchController) Get(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	match, err := matchDao.Get(getIDParam(c))
 	if checkErr(c, err, "Match get failed") {
 		c.JSON(200, match)
@@ -43,10 +35,6 @@ func (ctrl MatchController) Get(c *gin.Context) {
 
 //Save ...
 func (ctrl MatchController) Save(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	match := models.Match{}
 	err := c.BindJSON(&match)
 	if checkErr(c, err, "Match convert failed") {
@@ -59,10 +47,6 @@ func (ctrl MatchController) Save(c *gin.Context) {
 
 //AscVod ...
 func (ctrl MatchController) AscVod(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	mva := struct {
 		MatchID uint `json:"matchId"`
 		VodID   uint `json:"vodId"`
@@ -95,10 +79,6 @@ func (ctrl MatchController) AscVod(c *gin.Context) {
 
 //Delete ...
 func (ctrl MatchController) Delete(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	err := matchDao.Delete(getIDParam(c))
 	if checkErr(c, err, "Match delete failed") {
 		c.JSON(200, gin.H{"message": "Match deleted", "success": true})

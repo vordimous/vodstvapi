@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/vodstv/core/sess"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -10,17 +9,6 @@ import (
 func checkErr(c *gin.Context, err error, msg string) bool {
 	if err != nil {
 		c.JSON(406, gin.H{"Message": msg, "error": err.Error()})
-		c.Abort()
-		return false
-	}
-	return true
-}
-
-func checkLogin(c *gin.Context) bool {
-	watcherID := sess.GetWatcherID(c)
-
-	if watcherID == 0 {
-		c.JSON(403, gin.H{"message": "Please login first"})
 		c.Abort()
 		return false
 	}

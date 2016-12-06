@@ -14,10 +14,6 @@ var tagDao = new(dao.TagDao)
 
 //Find ...
 func (ctrl TagController) Find(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	tagSearch := make(map[string]interface{})
 	if !bindJSONToForm(c, &tagSearch) {
 		return
@@ -31,10 +27,6 @@ func (ctrl TagController) Find(c *gin.Context) {
 
 //Get ...
 func (ctrl TagController) Get(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	tag, err := tagDao.Get(getIDParam(c))
 	if checkErr(c, err, "Tag get failed") {
 		c.JSON(200, tag)
@@ -43,10 +35,6 @@ func (ctrl TagController) Get(c *gin.Context) {
 
 //Save ...
 func (ctrl TagController) Save(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	tag := models.Tag{}
 	err := c.BindJSON(&tag)
 	if checkErr(c, err, "Tag convert failed") {
@@ -59,10 +47,6 @@ func (ctrl TagController) Save(c *gin.Context) {
 
 //Delete ...
 func (ctrl TagController) Delete(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	tag, err := tagDao.Delete(getIDParam(c))
 	if checkErr(c, err, "Tag delete failed") {
 		c.JSON(200, tag)

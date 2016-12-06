@@ -14,10 +14,6 @@ var vodDao = new(dao.VodDao)
 
 //Find ...
 func (ctrl VodController) Find(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	vodSearch := make(map[string]interface{})
 	if !bindJSONToForm(c, &vodSearch) {
 		return
@@ -31,10 +27,6 @@ func (ctrl VodController) Find(c *gin.Context) {
 
 //AscTag ...
 func (ctrl VodController) AscTag(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	vta := struct {
 		VodID uint `json:"vodId"`
 		TagID uint `json:"tagId"`
@@ -67,10 +59,6 @@ func (ctrl VodController) AscTag(c *gin.Context) {
 
 //Get ...
 func (ctrl VodController) Get(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	vod, err := vodDao.Get(getIDParam(c))
 	if checkErr(c, err, "Vod get failed") {
 		c.JSON(200, vod)
@@ -79,10 +67,6 @@ func (ctrl VodController) Get(c *gin.Context) {
 
 //Save ...
 func (ctrl VodController) Save(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	vod := models.Vod{}
 	err := c.BindJSON(&vod)
 	if checkErr(c, err, "Vod convert failed") {
@@ -95,10 +79,6 @@ func (ctrl VodController) Save(c *gin.Context) {
 
 //Delete ...
 func (ctrl VodController) Delete(c *gin.Context) {
-	if !checkLogin(c) {
-		return
-	}
-
 	vod, err := vodDao.Delete(getIDParam(c))
 	if checkErr(c, err, "Vod delete failed") {
 		c.JSON(200, vod)
