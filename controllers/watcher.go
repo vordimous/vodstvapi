@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/vodstv/core/dao"
+	"github.com/vodstv/core/models"
 	"github.com/vodstv/core/sess"
 
 	"github.com/gin-gonic/contrib/sessions"
@@ -31,6 +32,7 @@ func (ctrl WatcherController) Signin(c *gin.Context) {
 		session.Set("watcher_id", watcher.ID)
 		session.Set("watcher_email", watcher.Email)
 		session.Set("watcher_name", watcher.Name)
+		session.Set("watcher_is_admin", "true")
 		session.Save()
 
 		c.JSON(200, sess.GetSessionWatcherInfo(c))
@@ -63,6 +65,7 @@ func (ctrl WatcherController) Signup(c *gin.Context) {
 		session.Set("watcher_id", watcher.ID)
 		session.Set("watcher_email", watcher.Email)
 		session.Set("watcher_name", watcher.Name)
+		session.Set("watcher_is_admin", "true")
 		session.Save()
 		c.JSON(200, watcher)
 	} else {
@@ -88,4 +91,45 @@ func (ctrl WatcherController) Signout(c *gin.Context) {
 //Me ...
 func (ctrl WatcherController) Me(c *gin.Context) {
 	c.JSON(200, sess.GetSessionWatcherInfo(c))
+}
+
+//Find ...
+func (ctrl WatcherController) Find(c *gin.Context) {
+	watcherSearch := make(map[string]interface{})
+	if !bindJSONToForm(c, &watcherSearch) {
+		return
+	}
+
+	watcher, err := watcherDao.Find(watcherSearch)
+	if checkErr(c, err, "Could not find watchers") {
+		c.JSON(200, watcher)
+	}
+}
+
+//Get ...
+func (ctrl WatcherController) Get(c *gin.Context) {
+	watcher, err := watcherDao.Get(getIDParam(c))
+	if checkErr(c, err, "Watcher get failed") {
+		c.JSON(200, watcher)
+	}
+}
+
+//Save ...
+func (ctrl WatcherController) Save(c *gin.Context) {
+	watcher := models.Watcher{}
+	err := c.BindJSON(&watcher)
+	if checkErr(c, err, "Watcher convert failed") {
+		err = watcherDao.Save(&watcher)
+		if checkErr(c, err, "Watcher save failed") {
+			c.JSON(200, watcher)
+		}
+	}
+}
+
+//Delete ...
+func (ctrl WatcherController) Delete(c *gin.Context) {
+	err := watcherDao.Delete(getIDParam(c))
+	if checkErr(c, err, "Watcher delete failed") {
+		c.JSON(200, gin.H{"message": "Watcher deleted"})
+	}
 }

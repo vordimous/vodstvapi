@@ -73,10 +73,15 @@ func main() {
 		/*** START Watcher ***/
 		watcher := new(controllers.WatcherController)
 
-		v1.POST("/watcher/login", watcher.Signin)
-		v1.POST("/watcher/register", watcher.Signup)
-		v1.GET("/watcher/signout", watcher.Signout)
+		v1.POST("/login", watcher.Signin)
+		v1.POST("/register", watcher.Signup)
+		v1.GET("/signout", watcher.Signout)
 		v1.GET("/me", watcher.Me)
+
+		v1.POST("/watcher", policies.ReqAuth(), policies.SelfOrAdmin(), watcher.Save)
+		v1.POST("/watchers", policies.ReqAuth(), policies.Admin(), watcher.Find)
+		v1.GET("/watcher/:id", policies.ReqAuth(), policies.SelfOrAdmin(), watcher.Get)
+		v1.DELETE("/watcher/:id", policies.ReqAuth(), policies.SelfOrAdmin(), watcher.Delete)
 
 		/*** START Vod ***/
 		vod := new(controllers.VodController)
