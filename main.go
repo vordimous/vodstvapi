@@ -88,7 +88,7 @@ func main() {
 
 		v1.POST("/vod", vod.Save)
 		v1.POST("/vodAscTag", vod.AscTag)
-		v1.POST("/vods", vod.Find)
+		v1.POST("/vods", vod.Query)
 		v1.GET("/vod/:id", vod.Get)
 		v1.DELETE("/vod/:id", vod.Delete)
 

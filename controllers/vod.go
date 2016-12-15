@@ -25,6 +25,22 @@ func (ctrl VodController) Find(c *gin.Context) {
 	}
 }
 
+//Query ...
+func (ctrl VodController) Query(c *gin.Context) {
+	vodQuery := struct {
+		TagIDs []uint `json:"tagIds"`
+	}{}
+
+	if !bindJSONToForm(c, &vodQuery) {
+		return
+	}
+
+	vod, err := vodDao.Query(vodQuery.TagIDs)
+	if checkErr(c, err, "Could not find vods") {
+		c.JSON(200, vod)
+	}
+}
+
 //AscTag ...
 func (ctrl VodController) AscTag(c *gin.Context) {
 	vta := struct {
