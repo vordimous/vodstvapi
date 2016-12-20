@@ -4,14 +4,13 @@ import (
 	"fmt"
 	"os"
 
-	"esvodsApi/controllers"
-	"esvodsApi/policies"
-
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"github.com/ekyoung/gin-nice-recovery"
 
+	"vodstv/api/controllers"
+	"vodstv/api/policies"
 	"vodstv/core/dao"
 	"vodstv/core/sess"
 )

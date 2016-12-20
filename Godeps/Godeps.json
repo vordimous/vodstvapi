@@ -1,5 +1,5 @@
 {
-	"ImportPath": "esvodsApi",
+	"ImportPath": "vodstv/api",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v75",
 	"Packages": [
