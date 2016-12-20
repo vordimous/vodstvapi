@@ -2,6 +2,9 @@
 	"ImportPath": "esvodsApi",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v75",
+	"Packages": [
+		"./..."
+	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/boj/redistore",
@@ -102,22 +105,6 @@
 			"Rev": "ee05b128a739a0fb76c7ebd3ae4810c1de808d6d"
 		},
 		{
-			"ImportPath": "vodstv/core",
-			"Rev": "cf3a2f0fb6e528d165f40151fdd8424a0a764f05"
-		},
-		{
-			"ImportPath": "vodstv/core/dao",
-			"Rev": "cf3a2f0fb6e528d165f40151fdd8424a0a764f05"
-		},
-		{
-			"ImportPath": "vodstv/core/models",
-			"Rev": "cf3a2f0fb6e528d165f40151fdd8424a0a764f05"
-		},
-		{
-			"ImportPath": "vodstv/core/sess",
-			"Rev": "cf3a2f0fb6e528d165f40151fdd8424a0a764f05"
-		},
-		{
 			"ImportPath": "golang.org/x/crypto/bcrypt",
 			"Rev": "8a549a1948fc5271eb24f36dcb0d3b47dec75a16"
 		},
@@ -137,6 +124,22 @@
 		{
 			"ImportPath": "gopkg.in/yaml.v2",
 			"Rev": "a5b47d31c556af34a302ce5d659e6fea44d90de0"
+		},
+		{
+			"ImportPath": "vodstv/core",
+			"Rev": "5891e2f66af58655ffd2d07776fbc231ba1c1610"
+		},
+		{
+			"ImportPath": "vodstv/core/dao",
+			"Rev": "5891e2f66af58655ffd2d07776fbc231ba1c1610"
+		},
+		{
+			"ImportPath": "vodstv/core/models",
+			"Rev": "5891e2f66af58655ffd2d07776fbc231ba1c1610"
+		},
+		{
+			"ImportPath": "vodstv/core/sess",
+			"Rev": "5891e2f66af58655ffd2d07776fbc231ba1c1610"
 		}
 	]
 }
