@@ -64,6 +64,7 @@ func main() {
 	r.Use(sessions.Sessions("esvods-session", sess.Init()))
 
 	dao.Init()
+	dao.DbMigration()
 
 	v1 := r.Group("/v1")
 	{
