@@ -3,7 +3,7 @@ package policies
 import (
 	"strconv"
 
-	"github.com/vodstv/core/sess"
+	"vodstv/core/sess"
 
 	"github.com/gin-gonic/gin"
 )

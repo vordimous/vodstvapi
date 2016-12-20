@@ -12,8 +12,8 @@ import (
 
 	"github.com/ekyoung/gin-nice-recovery"
 
-	"github.com/vodstv/core/dao"
-	"github.com/vodstv/core/sess"
+	"vodstv/core/dao"
+	"vodstv/core/sess"
 )
 
 //CORSMiddleware ...

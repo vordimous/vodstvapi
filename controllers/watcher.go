@@ -3,9 +3,9 @@ package controllers
 import (
 	"fmt"
 
-	"github.com/vodstv/core/dao"
-	"github.com/vodstv/core/models"
-	"github.com/vodstv/core/sess"
+	"vodstv/core/dao"
+	"vodstv/core/models"
+	"vodstv/core/sess"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
