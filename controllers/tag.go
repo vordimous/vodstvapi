@@ -12,6 +12,21 @@ type TagController struct{}
 
 var tagDao = new(dao.TagDao)
 
+//FindByTags ...
+func (ctrl TagController) FindByTags(c *gin.Context) {
+	tagSearch := struct {
+		TagIDs []uint `json:"tagIds"`
+	}{}
+	if !bindJSONToForm(c, &tagSearch) {
+		return
+	}
+
+	tag, err := tagDao.FindByTags(tagSearch.TagIDs)
+	if checkErr(c, err, "Could not find tags") {
+		c.JSON(200, tag)
+	}
+}
+
 //Find ...
 func (ctrl TagController) Find(c *gin.Context) {
 	tagSearch := make(map[string]interface{})

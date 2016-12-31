@@ -52,3 +52,37 @@ func (ctrl FeedController) Delete(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "Feed deleted"})
 	}
 }
+
+//actions
+
+//AscTag ...
+func (ctrl FeedController) AscTag(c *gin.Context) {
+	fta := struct {
+		FeedID uint `json:"feedId"`
+		TagID  uint `json:"tagId"`
+	}{}
+	if !bindJSONToForm(c, &fta) {
+		return
+	}
+
+	if fta.FeedID != 0 && fta.TagID != 0 {
+		var feed models.Feed
+		var tag models.Tag
+		var err error
+		feed, err = feedDao.Get(fta.FeedID)
+		tag, err = tagDao.Get(fta.TagID)
+		if checkErr(c, err, "Could not find items") {
+			feed.Tags = append(feed.Tags, tag)
+			feedDao.Save(&feed)
+
+			if checkErr(c, err, "Could not save feed") {
+				c.JSON(200, feed)
+			}
+		}
+	} else {
+		c.JSON(406, gin.H{"Message": "Must supply both IDs", "form": fta})
+		c.Abort()
+		return
+	}
+
+}

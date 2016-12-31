@@ -55,6 +55,10 @@ func httpTest(c *gin.Context) {
 }
 
 func main() {
+	// sender := email.NewSender("esportvods@gmail.com", "4n2TCwqIY8Ha")
+
+	// sender.SendMail([]string{"vordimous@outlook.com"}, "Test", "swaggy")
+
 	r := gin.Default()
 
 	//Middlewear
@@ -106,6 +110,7 @@ func main() {
 
 		v1.POST("/tag", tag.Save)
 		v1.POST("/tags", tag.Find)
+		v1.POST("/tagsByTag", tag.FindByTags)
 		v1.GET("/tag/:id", tag.Get)
 		v1.DELETE("/tag/:id", tag.Delete)
 
@@ -125,4 +130,5 @@ func main() {
 	}
 
 	r.Run(":" + port)
+
 }

@@ -16,6 +16,7 @@ type WatcherController struct{}
 
 var watcherDao = new(dao.WatcherDao)
 
+//Auth
 //Signin ...
 func (ctrl WatcherController) Signin(c *gin.Context) {
 	signinForm := dao.SigninForm{}
@@ -93,6 +94,34 @@ func (ctrl WatcherController) Me(c *gin.Context) {
 	c.JSON(200, sess.GetSessionWatcherInfo(c))
 }
 
+//Actions
+//AddFeed ...
+func (ctrl WatcherController) AddFeed(c *gin.Context) {
+	feed := models.Feed{}
+	err := c.BindJSON(&feed)
+	if checkErr(c, err, "Feed convert failed") {
+		err = feedDao.Save(&feed)
+		WID := getIDParam(c)
+
+		if checkErr(c, err, "Could not save feed") && feed.ID != 0 && WID != 0 {
+			var watcher models.Watcher
+			var err error
+			watcher, err = watcherDao.Get(WID)
+
+			if checkErr(c, err, "Could not get watcher") {
+				watcher.Feeds = append(watcher.Feeds, feed)
+				watcherDao.Save(&watcher)
+
+				if checkErr(c, err, "Could not save watcher") {
+					c.JSON(200, watcher)
+					return
+				}
+			}
+		}
+	}
+}
+
+//Crud
 //Find ...
 func (ctrl WatcherController) Find(c *gin.Context) {
 	watcherSearch := make(map[string]interface{})
