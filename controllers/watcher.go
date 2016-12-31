@@ -17,6 +17,16 @@ type WatcherController struct{}
 var watcherDao = new(dao.WatcherDao)
 
 //Auth
+
+func setSession(c *gin.Context, w models.Watcher) {
+	session := sessions.Default(c)
+	session.Set("watcher_id", w.ID)
+	session.Set("watcher_email", w.Email)
+	session.Set("watcher_username", w.Username)
+	session.Set("watcher_is_admin", "true")
+	session.Save()
+}
+
 //Signin ...
 func (ctrl WatcherController) Signin(c *gin.Context) {
 	signinForm := dao.SigninForm{}
@@ -29,12 +39,7 @@ func (ctrl WatcherController) Signin(c *gin.Context) {
 
 	watcher, err := watcherDao.Signin(signinForm)
 	if err == nil {
-		session := sessions.Default(c)
-		session.Set("watcher_id", watcher.ID)
-		session.Set("watcher_email", watcher.Email)
-		session.Set("watcher_name", watcher.Name)
-		session.Set("watcher_is_admin", "true")
-		session.Save()
+		setSession(c, watcher)
 
 		c.JSON(200, sess.GetSessionWatcherInfo(c))
 	} else {
@@ -62,12 +67,7 @@ func (ctrl WatcherController) Signup(c *gin.Context) {
 	}
 
 	if watcher.ID > 0 {
-		session := sessions.Default(c)
-		session.Set("watcher_id", watcher.ID)
-		session.Set("watcher_email", watcher.Email)
-		session.Set("watcher_name", watcher.Name)
-		session.Set("watcher_is_admin", "true")
-		session.Save()
+		setSession(c, watcher)
 		c.JSON(200, watcher)
 	} else {
 		c.JSON(406, gin.H{"message": "Could not signup this watcher", "error": err.Error()})
