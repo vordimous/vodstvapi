@@ -25,6 +25,54 @@ func (ctrl MatchController) Find(c *gin.Context) {
 	}
 }
 
+//Query ...
+func (ctrl MatchController) Query(c *gin.Context) {
+	matchQuery := struct {
+		TagIDs []uint `json:"tagIds"`
+	}{}
+
+	if !bindJSONToForm(c, &matchQuery) {
+		return
+	}
+
+	match, err := matchDao.Query(matchQuery.TagIDs)
+	if checkErr(c, err, "Could not find matchs") {
+		c.JSON(200, match)
+	}
+}
+
+//AscTag ...
+func (ctrl MatchController) AscTag(c *gin.Context) {
+	vta := struct {
+		MatchID uint `json:"matchId"`
+		TagID   uint `json:"tagId"`
+	}{}
+	if !bindJSONToForm(c, &vta) {
+		return
+	}
+
+	if vta.MatchID != 0 && vta.TagID != 0 {
+		var match models.Match
+		var tag models.Tag
+		var err error
+		match, err = matchDao.Get(vta.MatchID)
+		tag, err = tagDao.Get(vta.TagID)
+		if checkErr(c, err, "Could not find items") {
+			match.Tags = append(match.Tags, tag)
+			matchDao.Save(&match)
+
+			if checkErr(c, err, "Could not save match") {
+				c.JSON(200, match)
+			}
+		}
+	} else {
+		c.JSON(406, gin.H{"Message": "Must supply both IDs", "form": vta})
+		c.Abort()
+		return
+	}
+
+}
+
 //Get ...
 func (ctrl MatchController) Get(c *gin.Context) {
 	match, err := matchDao.Get(getIDParam(c))

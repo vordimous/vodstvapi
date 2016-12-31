@@ -101,7 +101,7 @@ func main() {
 
 		v1.POST("/match", match.Save)
 		v1.POST("/matchAscVod", match.AscVod)
-		v1.POST("/matches", match.Find)
+		v1.POST("/matches", match.Query)
 		v1.GET("/match/:id", match.Get)
 		v1.DELETE("/match/:id", match.Delete)
 
