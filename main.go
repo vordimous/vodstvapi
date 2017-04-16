@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 
 	"github.com/ekyoung/gin-nice-recovery"
@@ -12,7 +11,6 @@ import (
 	"vodstv/api/controllers"
 	"vodstv/api/policies"
 	"vodstv/core/dao"
-	"vodstv/core/sess"
 )
 
 //CORSMiddleware ...
@@ -65,7 +63,7 @@ func main() {
 	r.Use(nice.Recovery(recoveryHandler))
 
 	r.Use(CORSMiddleware())
-	r.Use(sessions.Sessions("esvods-session", sess.Init()))
+	// r.Use(sessions.Sessions("esvods-session", sess.Init()))
 
 	dao.Init()
 	dao.DbMigration()
