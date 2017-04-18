@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gin-gonic/gin"
+	"google.golang.org/appengine"
 
 	"github.com/ekyoung/gin-nice-recovery"
+	"github.com/gin-gonic/gin"
 
 	"vodstv/api/controllers"
 	"vodstv/api/policies"
@@ -53,6 +54,7 @@ func httpTest(c *gin.Context) {
 }
 
 func main() {
+	appengine.Main()
 	// sender := email.NewSender("esportvods@gmail.com", "4n2TCwqIY8Ha")
 
 	// sender.SendMail([]string{"vordimous@outlook.com"}, "Test", "swaggy")
